@@ -15,6 +15,10 @@ public class Account {
     private double currentbalance;
     private double datecreated;
 
+    @ManyToOne
+    @JoinColumn(name="customer_id")
+    Customer customer;
+
 
     public Long getId() {
         return id;

@@ -3,6 +3,7 @@ package com.example.simplebankapi.entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -20,6 +21,9 @@ public class Customer {
     private Date dob;
     @Column(name = "date_created")
     private Date datecreated;
+
+    @OneToMany(mappedBy ="customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Account> accounts;
 
     public Long getId() {
         return id;
