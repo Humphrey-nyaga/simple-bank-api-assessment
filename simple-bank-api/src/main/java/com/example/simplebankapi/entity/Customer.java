@@ -15,12 +15,29 @@ public class Customer {
 
     private String firstname;
     private String lastname;
+    @Column(unique = true)
     private String email;
 
     private String phonenumber;
     private Date dob;
     @Column(name = "date_created")
     private Date datecreated;
+
+    @PrePersist
+    protected void onCreate() {
+        datecreated = new Date();
+    }
+
+    public Customer() {
+    }
+
+    public Customer(String firstname, String lastname, String email, String phonenumber, Date dob) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.phonenumber = phonenumber;
+        this.dob = dob;
+    }
 
     @OneToMany(mappedBy ="customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Account> accounts;
@@ -79,5 +96,13 @@ public class Customer {
 
     public void setDateCreated(Date datecreated) {
         this.datecreated = datecreated;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }
