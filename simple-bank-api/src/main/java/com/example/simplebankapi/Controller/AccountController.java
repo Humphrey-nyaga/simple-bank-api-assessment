@@ -39,4 +39,10 @@ public class AccountController {
                     return accountRepository.save(account);
                 }).orElseThrow(()->new CustomerNotFoundException("Customer with id "+customerId+" does npt exist"));
     }
+
+    @DeleteMapping("/account/{id}")
+    public ResponseEntity<String> deleteAccountById(@PathVariable Long id){
+        accountService.deleteAccountById(id);
+        return ResponseEntity.ok("Account Deleted Successfully!!");
+    }
 }

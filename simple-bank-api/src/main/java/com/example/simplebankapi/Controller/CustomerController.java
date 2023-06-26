@@ -91,4 +91,10 @@ public class CustomerController {
         return customerService.getCustomerAccountsByEmailOrPhoneNumber(email, phoneNumber);
     }
 
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<String> deleteCustomerById(@PathVariable Long id){
+        customerService.deleteCustomerById(id);
+        return ResponseEntity.ok("User Deleted Successfully!");
+    }
+
 }
