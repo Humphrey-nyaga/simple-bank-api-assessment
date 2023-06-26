@@ -1,5 +1,7 @@
 package com.example.simplebankapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -13,33 +15,35 @@ public class Customer {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     @Column(unique = true)
     private String email;
 
-    private String phonenumber;
+    @Column(unique = true)
+    private String phoneNumber;
     private Date dob;
     @Column(name = "date_created")
-    private Date datecreated;
+    private Date dateCreated;
 
     @PrePersist
     protected void onCreate() {
-        datecreated = new Date();
+        dateCreated = new Date();
     }
 
     public Customer() {
     }
 
-    public Customer(String firstname, String lastname, String email, String phonenumber, Date dob) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public Customer(String firstName, String lastName, String email, String phoneNumber, Date dob) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
-        this.phonenumber = phonenumber;
+        this.phoneNumber = phoneNumber;
         this.dob = dob;
     }
 
-    @OneToMany(mappedBy ="customer", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="customer", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE )
+    @JsonManagedReference
     private List<Account> accounts;
 
     public Long getId() {
@@ -51,19 +55,19 @@ public class Customer {
     }
 
     public String getFirstName() {
-        return firstname;
+        return firstName;
     }
 
-    public void setFirstName(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return lastname;
+        return lastName;
     }
 
-    public void setLastName(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -75,11 +79,11 @@ public class Customer {
     }
 
     public String getPhoneNumber() {
-        return phonenumber;
+        return phoneNumber;
     }
 
-    public void setPhoneNumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Date getDob() {
@@ -91,11 +95,11 @@ public class Customer {
     }
 
     public Date getDateCreated() {
-        return datecreated;
+        return dateCreated;
     }
 
-    public void setDateCreated(Date datecreated) {
-        this.datecreated = datecreated;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public List<Account> getAccounts() {
