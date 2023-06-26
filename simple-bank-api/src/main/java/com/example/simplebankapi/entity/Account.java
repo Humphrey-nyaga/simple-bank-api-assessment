@@ -1,7 +1,9 @@
 package com.example.simplebankapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,22 +17,23 @@ public class Account {
 
     private double openingbalance = 0.0;
     private double currentbalance = 0.0;
-    private Date datecreated;
+    private LocalDateTime dateCreated;
 
-    @PrePersist
-    protected void onCreate() {
-        datecreated = new Date();
-    }
+//    @PrePersist
+//    protected void onCreate() {
+//        datecreated = new Date();
+//    }
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     @ManyToOne
     @JoinColumn(name="customer_id", referencedColumnName = "id")
+            @JsonBackReference
     Customer customer;
 
-    public Account(double openingbalance, double currentbalance, Date datecreated, AccountType accountType, Customer customer) {
+    public Account(double openingbalance, double currentbalance, LocalDateTime datecreated, AccountType accountType, Customer customer) {
         this.openingbalance = openingbalance;
         this.currentbalance = currentbalance;
-        this.datecreated = datecreated;
+        this.dateCreated = datecreated;
         this.accountType = accountType;
         this.customer = customer;
     }
@@ -63,12 +66,12 @@ public class Account {
         this.currentbalance = currentbalance;
     }
 
-    public Date getDateCreated() {
-        return datecreated;
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
     }
 
-    public void setDateCreated(Date datecreated) {
-        this.datecreated = datecreated;
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public AccountType getAccountType() {
@@ -78,4 +81,13 @@ public class Account {
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
 }
