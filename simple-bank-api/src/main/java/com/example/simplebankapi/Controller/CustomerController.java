@@ -41,8 +41,7 @@ public class CustomerController {
 
     @GetMapping("")
     public List<Customer> findAllCustomers(){
-        List<Customer> customers = customerService.findAllCustomers();
-        return customers;
+        return customerService.findAllCustomers();
     }
 
     @GetMapping("/{id}")
@@ -95,6 +94,19 @@ public class CustomerController {
     public  ResponseEntity<String> deleteCustomerById(@PathVariable Long id){
         customerService.deleteCustomerById(id);
         return ResponseEntity.ok("User Deleted Successfully!");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Customer> updateCustomerInfo(@PathVariable Long id, @RequestBody Customer customer) {
+        try {
+            customer.setId(id);
+            Customer updatedCustomer = customerService.updateCustomerInfo(customer);
+            return ResponseEntity.ok(updatedCustomer);
+        } catch (CustomerNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

@@ -4,9 +4,12 @@ import com.example.simplebankapi.Exception.CustomerNotFoundException;
 import com.example.simplebankapi.Repository.CustomerRepository;
 import com.example.simplebankapi.entity.Account;
 import com.example.simplebankapi.entity.Customer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,6 +71,21 @@ public class CustomerService {
 
     public void deleteCustomerById(Long id){
         customerRepository.deleteById(id);
+    }
+    public Customer updateCustomerInfo(Customer customer) {
+        try {
+            Optional<Customer> customerToUpdate = findCustomerById(customer.getId());
+            if (customerToUpdate.isPresent()) {
+                Customer existingCustomer = customerToUpdate.get();
+                BeanUtils.copyProperties(customer, existingCustomer, "id", "dateCreated");
+
+                Customer savedCustomer = customerRepository.save(existingCustomer);
+                return savedCustomer;
+            }
+        } catch (CustomerNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found", ex);
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update customer");
     }
 
 }
