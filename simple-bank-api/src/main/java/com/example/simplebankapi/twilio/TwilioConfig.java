@@ -23,7 +23,7 @@ public class TwilioConfig {
     @PostConstruct
     public void init() {
         Twilio.init(accountSid, authToken);
-        LOGGER.info("Twilio Initialized with SID {}", accountSid);
+        //LOGGER.info("Twilio Initialized with SID {}", accountSid);
 
 
     }
