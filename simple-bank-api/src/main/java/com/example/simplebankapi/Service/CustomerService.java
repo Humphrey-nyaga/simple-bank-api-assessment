@@ -4,6 +4,11 @@ import com.example.simplebankapi.Exception.CustomerNotFoundException;
 import com.example.simplebankapi.Repository.CustomerRepository;
 import com.example.simplebankapi.entity.Account;
 import com.example.simplebankapi.entity.Customer;
+import com.example.simplebankapi.twilio.SendSMS;
+import com.example.simplebankapi.twilio.SmsRequest;
+import com.example.simplebankapi.twilio.SmsSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,9 +23,13 @@ import java.util.Optional;
 @Service
 public class CustomerService {
     CustomerRepository customerRepository;
+    SendSMS sendSMS;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmsSender.class);
 
-    public CustomerService(CustomerRepository customerRepository) {
+
+    public CustomerService(CustomerRepository customerRepository, SendSMS sendSMS) {
         this.customerRepository = customerRepository;
+        this.sendSMS = sendSMS;
     }
 
     public Customer createCustomer(Customer customer) {
@@ -35,7 +44,18 @@ public class CustomerService {
             throw new DuplicateKeyException("Customer with similar Email already exists.");
         }
 
-        return customerRepository.save(customer);
+        Customer newCustomer  =  customerRepository.save(customer);
+        LOGGER.info("Customer has been Saved in the Database");
+        String message = String.format("Dear %s, your information has been added successfully.", newCustomer.getFirstName());
+
+        LOGGER.info("SMS Request Passed for{}", newCustomer.getFirstName());
+        SmsRequest smsRequest = new SmsRequest(newCustomer.getPhoneNumber(), message);
+        LOGGER.info("SMS Request Passed");
+        sendSMS.sendSms(smsRequest);
+        LOGGER.info("SMS Sending initialized");
+
+        return newCustomer;
+
     }
 
 
@@ -72,6 +92,7 @@ public class CustomerService {
     public void deleteCustomerById(Long id){
         customerRepository.deleteById(id);
     }
+
     public Customer updateCustomerInfo(Customer customer) {
         try {
             Optional<Customer> customerToUpdate = findCustomerById(customer.getId());
@@ -80,6 +101,15 @@ public class CustomerService {
                 BeanUtils.copyProperties(customer, existingCustomer, "id", "dateCreated");
 
                 Customer savedCustomer = customerRepository.save(existingCustomer);
+
+                LOGGER.info("Customer has been updated in the Database");
+                String message = String.format("Dear %s, your information has been updated successfully.", savedCustomer.getFirstName());
+                LOGGER.info("SMS Request Passed for{}", savedCustomer.getFirstName());
+                SmsRequest smsRequest = new SmsRequest(savedCustomer.getPhoneNumber(), message);
+                LOGGER.info("Update Info SMS Request Passed");
+                sendSMS.sendSms(smsRequest);
+                LOGGER.info("Update Info SMS Sending initialized");
+
                 return savedCustomer;
             }
         } catch (CustomerNotFoundException ex) {
