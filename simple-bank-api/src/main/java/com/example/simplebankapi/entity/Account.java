@@ -19,10 +19,6 @@ public class Account {
     private double currentbalance = 0.0;
     private LocalDateTime dateCreated;
 
-//    @PrePersist
-//    protected void onCreate() {
-//        datecreated = new Date();
-//    }
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     @ManyToOne
@@ -89,5 +85,7 @@ public class Account {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+
 
 }

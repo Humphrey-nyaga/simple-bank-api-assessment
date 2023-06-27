@@ -36,7 +36,7 @@ public class AccountController {
                 .map(customer -> {
                     account.setCustomer(customer);
                     account.setDateCreated(LocalDateTime.now());
-                    return accountRepository.save(account);
+                    return accountService.createAccount(account);
                 }).orElseThrow(()->new CustomerNotFoundException("Customer with id "+customerId+" does npt exist"));
     }
 
