@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "account")
@@ -12,11 +11,11 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-
     private Long id;
 
-    private double openingbalance = 0.0;
-    private double currentbalance = 0.0;
+    private double openingBalance;
+
+    private double currentBalance;
     private LocalDateTime dateCreated;
 
     @Enumerated(EnumType.STRING)
@@ -26,9 +25,9 @@ public class Account {
             @JsonBackReference
     Customer customer;
 
-    public Account(double openingbalance, double currentbalance, LocalDateTime datecreated, AccountType accountType, Customer customer) {
-        this.openingbalance = openingbalance;
-        this.currentbalance = currentbalance;
+    public Account(double openingBalance, double currentBalance, LocalDateTime datecreated, AccountType accountType, Customer customer) {
+        this.openingBalance = openingBalance;
+        this.currentBalance = currentBalance;
         this.dateCreated = datecreated;
         this.accountType = accountType;
         this.customer = customer;
@@ -47,19 +46,19 @@ public class Account {
     }
 
     public double getOpeningBalance() {
-        return openingbalance;
+        return openingBalance;
     }
 
-    public void setOpeningBalance(double openingbalance) {
-        this.openingbalance = openingbalance;
+    public void setOpeningBalance(double openingBalance) {
+        this.openingBalance = openingBalance;
     }
 
     public double getCurrentBalance() {
-        return currentbalance;
+        return currentBalance;
     }
 
-    public void setCurrentBalance(double currentbalance) {
-        this.currentbalance = currentbalance;
+    public void setCurrentBalance(double currentBalance) {
+        this.currentBalance = currentBalance;
     }
 
     public LocalDateTime getDateCreated() {
