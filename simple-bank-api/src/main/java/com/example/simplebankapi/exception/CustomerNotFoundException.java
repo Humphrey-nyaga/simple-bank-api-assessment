@@ -1,4 +1,4 @@
-package com.example.simplebankapi.Exception;
+package com.example.simplebankapi.exception;
 
 public class CustomerNotFoundException extends RuntimeException{
 

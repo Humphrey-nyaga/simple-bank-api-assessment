@@ -3,6 +3,7 @@ package com.example.simplebankapi.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,9 +14,9 @@ public class Account {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private double openingBalance;
+    private BigDecimal openingBalance;
 
-    private double currentBalance;
+    private BigDecimal currentBalance;
     private LocalDateTime dateCreated;
 
     @Enumerated(EnumType.STRING)
@@ -25,7 +26,7 @@ public class Account {
             @JsonBackReference
     Customer customer;
 
-    public Account(double openingBalance, double currentBalance, LocalDateTime datecreated, AccountType accountType, Customer customer) {
+    public Account(BigDecimal openingBalance, BigDecimal currentBalance, LocalDateTime datecreated, AccountType accountType, Customer customer) {
         this.openingBalance = openingBalance;
         this.currentBalance = currentBalance;
         this.dateCreated = datecreated;
@@ -45,19 +46,20 @@ public class Account {
         this.id = id;
     }
 
-    public double getOpeningBalance() {
+    public BigDecimal getOpeningBalance() {
         return openingBalance;
     }
 
-    public void setOpeningBalance(double openingBalance) {
+    public void setOpeningBalance(BigDecimal openingBalance) {
         this.openingBalance = openingBalance;
+        this.currentBalance = openingBalance;
     }
 
-    public double getCurrentBalance() {
+    public BigDecimal getCurrentBalance() {
         return currentBalance;
     }
 
-    public void setCurrentBalance(double currentBalance) {
+    public void setCurrentBalance(BigDecimal currentBalance) {
         this.currentBalance = currentBalance;
     }
 
@@ -86,5 +88,14 @@ public class Account {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", openingBalance=" + openingBalance +
+                ", currentBalance=" + currentBalance +
+                ", dateCreated=" + dateCreated +
+                ", accountType=" + accountType +
+                '}';
+    }
 }

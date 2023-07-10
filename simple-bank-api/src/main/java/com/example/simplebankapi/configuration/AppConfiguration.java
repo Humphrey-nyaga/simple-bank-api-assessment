@@ -1,4 +1,4 @@
-package com.example.simplebankapi.Configuration;
+package com.example.simplebankapi.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

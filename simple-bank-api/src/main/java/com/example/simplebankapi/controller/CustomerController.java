@@ -1,8 +1,8 @@
-package com.example.simplebankapi.Controller;
+package com.example.simplebankapi.controller;
 
-import com.example.simplebankapi.Exception.CustomerNotFoundException;
-import com.example.simplebankapi.Repository.CustomerRepository;
-import com.example.simplebankapi.Service.CustomerService;
+import com.example.simplebankapi.exception.CustomerNotFoundException;
+import com.example.simplebankapi.repository.CustomerRepository;
+import com.example.simplebankapi.service.CustomerService;
 import com.example.simplebankapi.entity.Customer;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

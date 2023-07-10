@@ -1,7 +1,7 @@
-package com.example.simplebankapi.Service;
+package com.example.simplebankapi.service;
 
-import com.example.simplebankapi.Exception.CustomerNotFoundException;
-import com.example.simplebankapi.Repository.CustomerRepository;
+import com.example.simplebankapi.exception.CustomerNotFoundException;
+import com.example.simplebankapi.repository.CustomerRepository;
 import com.example.simplebankapi.entity.Account;
 import com.example.simplebankapi.entity.Customer;
 import com.example.simplebankapi.twilio.SendSMS;
@@ -10,7 +10,6 @@ import com.example.simplebankapi.twilio.SmsSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
