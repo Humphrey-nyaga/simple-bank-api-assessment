@@ -1,8 +1,6 @@
 package com.example.simplebankapi.service;
 
-import com.example.simplebankapi.entity.Customer;
 import com.example.simplebankapi.exception.AccountNotFoundException;
-import com.example.simplebankapi.exception.CustomerNotFoundException;
 import com.example.simplebankapi.exception.InsufficientBalanceException;
 import com.example.simplebankapi.repository.AccountRepository;
 import com.example.simplebankapi.repository.CustomerRepository;
@@ -15,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -101,6 +98,14 @@ public class AccountService {
         BigDecimal newBalance = currentBalance.subtract(withdrawAmount);
         account.setCurrentBalance(newBalance);
         return accountRepository.save(account);
+    }
+
+    @Transactional
+    public Account transferCash(Long senderAccountId,Long receiverAccountID, BigDecimal transferAmount) throws InsufficientBalanceException {
+        withdrawCash(senderAccountId, transferAmount);
+        depositCash(receiverAccountID, transferAmount);
+
+        return new Account();
     }
 
 }
